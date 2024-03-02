@@ -11,11 +11,11 @@
     gap: 10px;
 }
 
-.nav-logo p{
+.nav-logo p a{
     color: #171717;
     font-size: 38px;
     font-weight: 600;
-
+    text-decoration: none;
 }
 
 .nav-menu{
