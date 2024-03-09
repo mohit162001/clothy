@@ -4,12 +4,37 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ShopContextProvider from './Context/ShowContext';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { getAuthToken } from './helper';
+import { setContext } from '@apollo/client/link/context';
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:1337/graphql',
+});
+
+
+const authLink = setContext((_, { headers }) => {
+  const token = getAuthToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ShopContextProvider>
+
+    <ApolloProvider client={client}>
     <App />
-  </ShopContextProvider>
+    </ApolloProvider>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
