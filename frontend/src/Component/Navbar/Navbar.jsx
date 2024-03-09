@@ -2,14 +2,21 @@ import React, { useState } from 'react'
 import './navbar.css'
 import logo from '../Assests/logo.png'
 import cart_icon from '../Assests/cart_icon.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { ShopContext } from '../../Context/ShowContext';
+import { clearData, getUserData } from '../../helper';
 
 
 function Navbar() {
     const [menu,setMenu] = useState('shop');
-    const {getTotalCartItems}=useContext(ShopContext);
+    const navigate = useNavigate()
+    const {getTotalCartItems,cartValue}=useContext(ShopContext);
+    const token = getUserData('token')
+    function handleLogOut(){
+        clearData();
+        navigate('/login')
+    }
   return (
     <div className="navbar">
         <div className="nav-logo">
@@ -23,9 +30,8 @@ function Navbar() {
             <li onClick={()=>{setMenu('kids')}}><Link style={{textDecoration:'none'}} to='/kids'>Kids</Link>{menu==='kids' ? <hr/>:<></>} </li>
         </ul>
         <div className="nav-login-cart">
-            <Link to='/login'><button>Login</button></Link>
             <Link to='/cart'><img src={cart_icon} alt="" /></Link>
-            <div className="nav-cart-count">{getTotalCartItems()}</div>
+            <div className="nav-cart-count">{cartValue}</div>{token? <Link onClick={handleLogOut}><button>Log out</button></Link>: <Link to='/login'><button>Login</button></Link>}
         </div>
     </div>
   )
