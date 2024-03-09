@@ -57,3 +57,7 @@
     align-items: center;
     justify-content: center;
 }
+.scroll-btn a{
+    text-decoration: none;
+  color: #fff;
+}

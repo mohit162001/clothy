@@ -22,7 +22,7 @@
 }
 
 .shopcategory-products{
-    margin: 20px 170px;
+    margin: 20px 30px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 80px;
@@ -45,4 +45,16 @@
     color: #ededed;
     background: #b0afaf;
     transition: 0.5s;
+}
+
+.shop-category p{
+    text-align: center;
+}
+.shop-category{
+    margin-right: 0rem;
+}
+.shop-category-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
