@@ -1,5 +1,9 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import all_product from '../Component/Assests/all_product';
+import { checkAuth, getUserData } from "../helper";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_CART_DETAILS } from "../query/query";
 
 export const ShopContext = createContext(null);
 
@@ -13,12 +17,28 @@ const getDefalutCart=()=>{
 
 const ShopContextProvider = (props) => {
     const [cartItems,setCartItems] = useState(getDefalutCart());
-
+    const [cartValue,setCartValue] = useState(0)
+    const navigate = useNavigate()
+    const id = getUserData('id')
+    const {data} = useQuery(GET_CART_DETAILS,{
+      variables:{
+        id:id
+      }
+    })
+    
+    useEffect(() => {
+        if (data && data.carts && data.carts.data.length > 0) {
+            setCartValue(data.carts.data[0].attributes.products.data.length);
+        } else {
+            setCartValue(0);
+        }
+    }, [data]);
     
     
     const addToCart = (itemId) =>{
-        setCartItems((prev)=>({...prev,[itemId]:prev[itemId]+1}))
-        console.log(cartItems)
+        if(checkAuth()===true){
+            setCartItems((prev)=>({...prev,[itemId]:prev[itemId]+1}))
+        }
     }
     
     const removeFromCart = (itemId) =>{
@@ -49,7 +69,7 @@ const ShopContextProvider = (props) => {
         }
         return totalItem;
     }
-    const contextValue = {getTotalCartItems,getTotalCartAmount,all_product,cartItems,addToCart,removeFromCart};
+    const contextValue = {getTotalCartItems,getTotalCartAmount,all_product,cartItems,addToCart,removeFromCart,cartValue,setCartValue};
     
     return(
         <ShopContext.Provider value={contextValue}>

@@ -2,9 +2,11 @@ import React, { useContext } from 'react'
 import './cartitems.css'
 import { ShopContext } from '../../Context/ShowContext'
 import remove_icon from '../Assests/cart_cross_icon.png'
-const CartItems = () => {
+import { useMutation } from '@apollo/client'
+const CartItems = ({products}) => {
     const {getTotalCartAmount,all_product,cartItems,removeFromCart} = useContext(ShopContext)
-  return (
+    // const [mutationFun] = useMutation()
+    return (
     <div className="cartitems">
         <div className="cartitems-format-main">
             <p>Product</p>
@@ -15,21 +17,18 @@ const CartItems = () => {
             <p>Remove</p>
         </div>
         <hr />
-        {all_product.map((i)=>{
-            if(cartItems[i.id]>0)
-            {
-                return <div>
+        {products.map((item)=>{
+                return <div key={item.id}>
                             <div className="cartitems-format cartitems-format-main">
-                                <img src={i.image} alt="" className='carticon-product-icon' />
-                                <p>{i.name}</p>
-                                <p> ₹{i.new_price}</p>
-                                <button className='cartitems-quantity'>{cartItems[i.id]}</button>
-                                <p> ₹{i.new_price * cartItems[i.id]}</p>
-                                <img src={remove_icon} onClick={()=>{removeFromCart(i.id)}} alt="" />
+                                <img src={"http://localhost:1337"+item.attributes.image.data.attributes.url} alt="" className='carticon-product-icon' />
+                                <p>{item.attributes.name}</p>
+                                <p> ₹{item.attributes.new_price}</p>
+                                <button className='cartitems-quantity'>{cartItems[item.attributes.id]}</button>
+                                <p> ₹{item.attributes.new_price * cartItems[item.attributes.id]}</p>
+                                <img src={remove_icon} onClick={()=>{removeFromCart(item.id)}} alt="" />
                             </div>
                             <hr />
                         </div>
-            }
             return null;
         })}
         <div className="cartitems-down">

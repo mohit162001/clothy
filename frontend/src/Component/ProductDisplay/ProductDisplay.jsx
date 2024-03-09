@@ -3,22 +3,44 @@ import './productdisplay.css'
 import star_icon from '../Assests/star_icon.png'
 import star_dull_icon from '../Assests/star_dull_icon.png'
 import { ShopContext } from '../../Context/ShowContext'
-const ProductDisplay = (props) => {
-    const {product} = props
-
+import { checkAuth } from '../../helper'
+import toast, { Toaster } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+const ProductDisplay = ({product,id}) => {
+    const navigate = useNavigate()
     const {addToCart} = useContext(ShopContext);
-
+    function addIfLogedIn(id){
+        if(checkAuth()===true){
+            addToCart(id)
+        }
+        else{
+            toast("Please login first", {
+                className: 'custom-toast',
+                duration:1000,
+                style: {
+                  backgroundColor: '#5e5e5e',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  fontSize:'1rem'
+                },
+                icon: "😉"
+              });
+        }
+    }
   return (
+    <>
+    <Toaster/>
     <div className='productdisplay'>
         <div className="productdisplay-left">
             <div className="productdisplay-imglist">
-                <img src={product.image} alt="" />
-                <img src={product.image} alt="" />
-                <img src={product.image} alt="" />
-                <img src={product.image} alt="" />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
             </div>
             <div className="productdisplay-img">
-                <img className='productdisplay-main-img' src={product.image} alt="" />
+                <img className='productdisplay-main-img' src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
             </div>
         </div>
         <div className="productdisplay-right">
@@ -36,7 +58,7 @@ const ProductDisplay = (props) => {
                 <div className="productdisplay-right-price-new">${product.new_price}</div>
             </div>
             <div className="productdisplay-right-description">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo quod magni sit tempora veniam natus!
+                <p>{product.description}</p>
             </div>
             <div className="productdisplay-right-size">
                 <h1>Select Size</h1>
@@ -48,10 +70,11 @@ const ProductDisplay = (props) => {
                     <div>XXL</div>
                 </div>
             </div>
-            <button onClick={()=>{addToCart(product.id)}}>ADD TO CART</button>
+            <button onClick={()=>{addIfLogedIn(id)}}>ADD TO CART</button>
             
         </div>
     </div>
+    </>
   )
 }
 
