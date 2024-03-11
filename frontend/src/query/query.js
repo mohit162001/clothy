@@ -54,6 +54,7 @@ export const GET_POPULAR_PRODUCT = gql`
 query{
   products(filters: {popular:{ eq: true }}) {
     data {
+      id
       attributes {
         name
         old_price
@@ -75,6 +76,7 @@ export const GET_NEW_COLLECTION = gql`
 query{
   products(filters: {new_collection:{ eq: true }}) {
     data {
+    id
       attributes {
         name
         old_price
