@@ -5,9 +5,8 @@ import star_dull_icon from '../Assests/star_dull_icon.png'
 import { ShopContext } from '../../Context/ShowContext'
 import { checkAuth } from '../../helper'
 import toast, { Toaster } from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 const ProductDisplay = ({product,id}) => {
-    const navigate = useNavigate()
     const {addToCart} = useContext(ShopContext);
     function addIfLogedIn(id){
         if(checkAuth()===true){
@@ -34,10 +33,10 @@ const ProductDisplay = ({product,id}) => {
     <div className='productdisplay'>
         <div className="productdisplay-left">
             <div className="productdisplay-imglist">
-                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
-                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
-                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
-                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt={product.name} />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt={product.name} />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt={product.name} />
+                <img src={"http://localhost:1337"+product.image.data.attributes.url} alt={product.name} />
             </div>
             <div className="productdisplay-img">
                 <img className='productdisplay-main-img' src={"http://localhost:1337"+product.image.data.attributes.url} alt="" />
